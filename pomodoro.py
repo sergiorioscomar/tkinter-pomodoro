@@ -80,3 +80,5 @@ check_marks = tk.Label(fg="green", bg="white", font=("Courier", 20))
 check_marks.grid(column=1, row=3)
 
 window.mainloop()
+
+#codigo base pomodoro
