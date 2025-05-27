@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from math import pi
+from playsound import playsound
+import threading
 
 # Constantes de tiempo
 WORK_MIN = 25
@@ -14,6 +16,10 @@ total_seconds = 0
 current_seconds = 0
 is_paused = False
 paused_time = 0
+
+# functions
+def play_sound():
+    threading.Thread(target=lambda: playsound("sound/alarm.wav")).start()
 
 def start_timer():
     global reps, total_seconds, current_seconds, paused_time, is_paused
@@ -81,6 +87,9 @@ def countdown(count):
     if count > 0:
         timer = window.after(1000, countdown, count - 1)
     else:
+        play_sound()  # <- Reproducir sonido
+        play_sound()  # <- Reproducir sonido 2da
+        play_sound()  # <- Reproducir sonido 3ra
         marks = "✔" * (reps // 2)
         checkmarks.config(text=marks)
         start_timer()

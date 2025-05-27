@@ -1,0 +1,31 @@
+# Ignorar entorno virtual
+pomodoro-env/
+
+# Ignorar archivos compilados de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignorar archivos de logs
+*.log
+
+# Ignorar configuraciones de editores comunes
+.vscode/
+.idea/
+*.swp
+
+# Ignorar archivos de entorno
+.env
+*.env
+
+# Ignorar bases de datos temporales o locales
+*.sqlite3
+
+# Ignorar archivos de caché
+*.cache/
+*.pyo
+
+# Ignorar carpetas de testing o build
+build/
+dist/
+*.egg-info/
