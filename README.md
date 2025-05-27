@@ -10,7 +10,7 @@ Es una técnica de gestión del tiempo que divide tu trabajo en bloques de 25 mi
 
 ## 📸 Captura de Pantalla
 
-![Vista de la app](img/pomodoro.png)
+![Vista de la app](img/pomodoro-app.png)
 
 ---
 
