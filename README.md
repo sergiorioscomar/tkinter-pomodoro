@@ -2,7 +2,7 @@
 
 Aplicación de escritorio tipo **Pomodoro Timer**, desarrollada en Python con Tkinter. Basada en la técnica Pomodoro, te ayuda a mejorar tu productividad organizando el trabajo en intervalos de 25 minutos seguidos por descansos.
 
-![Captura de la aplicación](./img/pomodoro.png)
+![Captura de la aplicación](./img/pomodoro-app.png)
 
 ## 🧠 ¿Qué es la técnica Pomodoro?
 
@@ -29,7 +29,7 @@ Es una técnica de gestión del tiempo que divide el trabajo en bloques:
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/tuusuario/pomodoro-app.git
+git clone git@github.com:sergiorioscomar/tkinter-pomodoro.git
 cd pomodoro-app
 
 # Ejecutar la app
