@@ -15,14 +15,13 @@ current_seconds = 0
 is_paused = False
 paused_time = 0
 
-
 def start_timer():
     global reps, total_seconds, current_seconds, paused_time, is_paused
 
     if is_paused:
         is_paused = False
         countdown(paused_time)
-        reset_btn.config(text="Pausar")
+        reset_btn.config(text="⏸")
         return
 
     reps += 1
@@ -51,10 +50,9 @@ def reset_timer():
     current_seconds = 0
     paused_time = 0
     canvas.itemconfig(timer_text, text="00:00")
-    title_label.config(text="Pomodoro")
+    title_label.config(text="Pomodoro-app", fg="green")
     checkmarks.config(text="")
     canvas.itemconfig(progress_arc, extent=0)
-
 
 def pause_or_reset():
     global timer, is_paused, paused_time
@@ -63,12 +61,12 @@ def pause_or_reset():
         window.after_cancel(timer)
         is_paused = True
         paused_time = current_seconds
-        reset_btn.config(text="Reiniciar")
+        reset_btn.config(text="🔄")
     else:
         reset_timer()
         is_paused = False
         paused_time = 0
-        reset_btn.config(text="Pausar")
+        reset_btn.config(text="⏸")
 
 def countdown(count):
     global current_seconds, timer
@@ -99,61 +97,49 @@ def toggle_theme():
     checkmarks.config(bg=bg, fg=fg)
     buttons_frame.config(bg=bg)
 
-# --------------------- UI ---------------------
+# ---------------- UI ----------------
 window = tk.Tk()
-window.title("Pomodoro")
-window.geometry("400x500")
-window.iconphoto(False, tk.PhotoImage(file="img/icono.png"))
+window.title("pomodoro")
+window.geometry("200x180")
 window.resizable(False, False)
-window.config(padx=20, pady=20, bg="white")
+window.config(padx=0, pady=0, bg="white")
 
 # Título
-title_label = tk.Label(text="Pomodoro-app", fg="green", bg="white",
-                       font=("Courier", 32, "bold"))
-title_label.pack(pady=(10, 0))
+title_label = tk.Label(window, text="pomodoro-app", fg="green", bg="white", font=("Courier", 10, "bold"))
+title_label.pack(pady=(5, 2))
 
-# Canvas principal
-canvas = tk.Canvas(width=300, height=300, bg="white", highlightthickness=0)
+# Canvas
+canvas = tk.Canvas(window, width=100, height=100, bg="white", highlightthickness=0)
 canvas.pack()
 
-# Barra de progreso exterior
-progress_arc = canvas.create_arc(10, 10, 290, 290, start=90,
-                                 extent=0, style="arc", outline="green", width=6)
+# Barra de progreso circular
+progress_arc = canvas.create_arc(5, 5, 95, 95, start=90, extent=0, style="arc", outline="green", width=3)
 
-# Imagen redonda con círculo blanco debajo
-canvas.create_oval(70, 70, 230, 230, fill="white", outline="")  # círculo base blanco
-tomato_img = tk.PhotoImage(file="img/tomato.png")
-canvas.create_image(150, 150, image=tomato_img)
+# Fondo blanco redondo
+canvas.create_oval(15, 15, 85, 85, fill="white", outline="")
 
-# Tiempo encima de la imagen
-timer_text = canvas.create_text(150, 150, text="00:00",
-                                fill="black", font=("Courier", 28, "bold"))
+# Texto del cronómetro
+timer_text = canvas.create_text(50, 50, text="00:00", fill="black", font=("Courier", 14, "bold"))
 
-# Frame de botones
-buttons_frame = tk.Frame(bg="white")
-buttons_frame.pack(pady=10)
+# Checkmarks ✔
+checkmarks = tk.Label(window, fg="green", bg="white", font=("Arial", 10))
+checkmarks.pack(pady=(0, 2))
 
-# Estilo de botones mejorado
+# Botones en frame
+buttons_frame = tk.Frame(window, bg="white")
+buttons_frame.pack()
+
 style = ttk.Style()
 style.theme_use("clam")
-style.configure("TButton",
-                font=("Segoe UI", 11),
-                padding=5,
-                relief="flat",
-                background="#dfe6e9",
-                foreground="black")
+style.configure("TButton", font=("Segoe UI", 8), padding=(1, 1), relief="flat")
 
-start_btn = ttk.Button(buttons_frame, text="Inicio", command=start_timer)
-start_btn.grid(row=0, column=0, padx=10)
+start_btn = ttk.Button(buttons_frame, text="▶", command=start_timer, width=3)
+start_btn.grid(row=0, column=0, padx=1)
 
-reset_btn = ttk.Button(buttons_frame, text="Pausar", command=pause_or_reset)
-reset_btn.grid(row=0, column=1, padx=10)
+reset_btn = ttk.Button(buttons_frame, text="⏸", command=pause_or_reset, width=3)
+reset_btn.grid(row=0, column=1, padx=1)
 
-theme_btn = ttk.Button(buttons_frame, text="🌓", command=toggle_theme)
-theme_btn.grid(row=0, column=2, padx=10)
-
-# Checkmarks
-checkmarks = tk.Label(fg="green", bg="white", font=("Arial", 18))
-checkmarks.pack()
+theme_btn = ttk.Button(buttons_frame, text="🌙", command=toggle_theme, width=3)
+theme_btn.grid(row=0, column=2, padx=1)
 
 window.mainloop()
