@@ -1,63 +1,144 @@
-# 🍅 Pomodoro App
+# Pomodoro-app 🕒🍅
 
-Aplicación de escritorio tipo **Pomodoro Timer**, desarrollada en Python con Tkinter. Basada en la técnica Pomodoro, te ayuda a mejorar tu productividad organizando el trabajo en intervalos de 25 minutos seguidos por descansos.
-
-![Captura de la aplicación](./img/pomodoro-app.png)
+**Pomodoro-app** es una aplicación de escritorio simple y funcional desarrollada en **Python** con **Tkinter**, que implementa la técnica Pomodoro para ayudarte a gestionar el tiempo y mejorar la productividad.
 
 ## 🧠 ¿Qué es la técnica Pomodoro?
 
-Es una técnica de gestión del tiempo que divide el trabajo en bloques:
-- 25 minutos de trabajo
-- 5 minutos de descanso corto
-- Cada 4 bloques: 15 minutos de descanso largo
+Es una técnica de gestión del tiempo que divide tu trabajo en bloques de 25 minutos (Pomodoros) separados por pequeños descansos. Después de cuatro Pomodoros, se toma un descanso más largo. Esto ayuda a mantener la concentración y evitar la fatiga mental.
 
-## ⚙️ Tecnologías utilizadas
+---
 
-- Python 3
-- Tkinter (interfaz gráfica)
-- `tkinter.PhotoImage` para imagen decorativa
+## 📸 Captura de Pantalla
 
-## 📦 Instalación
+![Vista de la app](img/pomodoro.png)
 
-### Requisitos
+---
+
+## 🛠️ Tecnologías utilizadas
 
 - Python 3
-- pip
-- tkinter (`sudo apt install python3-tk` en Ubuntu)
+- Tkinter
+- ttk para botones estilizados
+- Iconos personalizados
+- Imágenes en formato `.png`
 
-### Pasos
+---
+
+## 🚀 Instalación
+
+1. **Clona el repositorio:**
 
 ```bash
-# Clonar el repositorio
 git clone git@github.com:sergiorioscomar/tkinter-pomodoro.git
 cd pomodoro-app
-
-# Ejecutar la app
-python3 pomodoro.py
 ```
 
-💡 Asegurate de tener el archivo `img/pomodoro.png` en la misma carpeta para que se muestre la imagen correctamente.
+2. **Instala Python si no lo tienes:**
 
-## 🚀 Funcionalidades
+```bash
+sudo apt update
+sudo apt install python3 python3-pip
+```
 
-- Cuenta regresiva de 25 min para trabajo
-- Descansos automáticos (5 min o 15 min)
-- Botones para iniciar o reiniciar el ciclo
-- Indicadores visuales con ✔ para ciclos completados
+3. **Instala las dependencias necesarias:**
 
-## 📌 Mejoras futuras
+```bash
+pip install pillow
+```
 
-- ✅ Sonidos de notificación al finalizar el tiempo
-- ✅ Configuración de tiempos desde la interfaz
-- ⏳ Minimizar a la bandeja del sistema
-- 📈 Reporte de sesiones realizadas
-- 🌙 Modo oscuro
-- 🌐 Versión web con Flask o Django
+---
+
+## 🚀 Uso
+
+Ejecuta el archivo principal con:
+
+```bash
+python3 pomodoro-app.py
+```
+
+---
+
+## 🎨 Características
+
+- ✅ Temporizador de 25 minutos para enfoque.
+- ☕ Pausas cortas y largas automáticas.
+- 🎯 Interfaz clara con soporte para **modo claro y oscuro**.
+- 🔁 Botones funcionales: Inicio, Reiniciar, Cambio de Tema.
+- ⏳ **Barra de progreso** externa a la imagen del temporizador.
+- 🧲 Imagen redonda de tomate como ícono visual del temporizador.
+- 🪟 Ventana **fija y minimizable**.
+- 🌟 Icono de aplicación personalizado incluido.
+
+---
+
+## ✨ Mejoras Futuras
+
+- [ ] Notificaciones al terminar los ciclos.
+- [ ] Sonido de alarma opcional.
+- [ ] Estadísticas de productividad.
+- [ ] Configuración de tiempos personalizados.
+
+---
+
+## 📁 Estructura del Proyecto
+
+```
+pomodoro-app/
+├── img/
+│   ├── tomato.png       # Imagen del tomate (temporizador)
+│   └── icono.png        # Icono de la ventana
+├── pomodoro_app.py      # Código principal de la app
+└── README.md            # Documentación del proyecto
+
+```
+---
+## 🧩 Características
+- ✔️ Temporizador Pomodoro con 25/5/15 minutos predefinidos
+
+- ✔️ Interfaz clara y minimalista
+
+- ✔️ Modo claro y oscuro 🌞🌙
+
+- ✔️ Barra de progreso circular exterior
+
+- ✔️ Imagen redonda del tomate como fondo central
+
+- ✔️ Botones mejorados con íconos y estilo moderno
+
+- ✔️ Opción de pausa y reinicio dinámico en el mismo botón
+
+- ✔️ Icono personalizado en la ventana
+
+- ✔️ La ventana no es redimensionable y mantiene todo dentro del marco
+---
+
+
+## 🔧 Controles
+- Inicio: comienza el ciclo de trabajo o descanso
+
+- Pausar / Reiniciar: pausa el temporizador y cambia dinámicamente para reiniciar
+
+- 🌗 Tema: cambia entre modo claro y oscuro
+
+---
+
+## 🤝 Contribuciones
+
+¡Sos bienvenido a contribuir! Abrí un Issue o mandá un Pull Request si querés sumar algo nuevo 🚀
+
+---
 
 ## 🗃️ Organización del proyecto
 
 Este proyecto está gestionado con tableros Kanban en GitHub Projects para priorizar mejoras y bugs.
 
-## 📝 Licencia
+## 🧑‍💻 Autor
 
-Este proyecto está bajo la licencia MIT. Ver el archivo `LICENSE` para más detalles.
+Desarrollado por Sergio Rios - 2025  
+Inspirado por la técnica Pomodoro de Francesco Cirillo.
+
+---
+
+## 📜 Licencia
+
+MIT License
