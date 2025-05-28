@@ -8,6 +8,9 @@ import threading
 WORK_MIN = 1
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 15
+TAREA = "Trabajo"
+DESCANSO = "Descanso"
+DESCANSO_LARGO = "Descanso Largo"
 
 reps = 0
 timer = None
@@ -52,15 +55,15 @@ def start_pause_timer():
 
     if reps % 8 == 0:
         total_seconds = LONG_BREAK_MIN * 60
-        title_label.config(text="Descanso Largo", fg="#e17055")
+        title_label.config(text=DESCANSO_LARGO, fg="#e17055")
         canvas.itemconfig(progress_arc, outline="#e17055")
     elif reps % 2 == 0:
         total_seconds = SHORT_BREAK_MIN * 60
-        title_label.config(text="Descanso", fg="#74b9ff")
+        title_label.config(text=DESCANSO, fg="#74b9ff")
         canvas.itemconfig(progress_arc, outline="#74b9ff")
     else:
         total_seconds = WORK_MIN * 60
-        title_label.config(text="Trabajo", fg="#00b894")
+        title_label.config(text=TAREA, fg="#00b894")
         canvas.itemconfig(progress_arc, outline="#00b894")
 
     current_seconds = total_seconds
@@ -118,7 +121,7 @@ def toggle_theme():
 def open_settings():
     settings_window = tk.Toplevel(window)
     settings_window.title("Configuración")
-    settings_window.geometry("250x150")
+    settings_window.geometry("300x220")
     settings_window.resizable(False, False)
     
     # Hacer que la ventana de configuración sea modal
@@ -133,8 +136,10 @@ def open_settings():
     work_var = tk.StringVar(value=str(WORK_MIN))
     short_break_var = tk.StringVar(value=str(SHORT_BREAK_MIN))
     long_break_var = tk.StringVar(value=str(LONG_BREAK_MIN))
+    tarea_var = tk.StringVar(value=str(TAREA))
     
     # Labels y inputs
+
     tk.Label(input_frame, text="Tiempo de trabajo (min):").grid(row=0, column=0, sticky="w", pady=2)
     tk.Entry(input_frame, textvariable=work_var, width=10).grid(row=0, column=1, padx=5)
     
@@ -143,13 +148,17 @@ def open_settings():
     
     tk.Label(input_frame, text="Descanso largo (min):").grid(row=2, column=0, sticky="w", pady=2)
     tk.Entry(input_frame, textvariable=long_break_var, width=10).grid(row=2, column=1, padx=5)
+
+    tk.Label(input_frame, text="Tarea a realizar:").grid(row=3, column=0, sticky="w", pady=2)
+    tk.Entry(input_frame, textvariable=tarea_var, width=10).grid(row=3, column=1, padx=5)
     
     def save_settings():
-        global WORK_MIN, SHORT_BREAK_MIN, LONG_BREAK_MIN
+        global WORK_MIN, SHORT_BREAK_MIN, LONG_BREAK_MIN, TAREA
         try:
             WORK_MIN = int(work_var.get())
             SHORT_BREAK_MIN = int(short_break_var.get())
             LONG_BREAK_MIN = int(long_break_var.get())
+            TAREA = str(tarea_var.get())
             settings_window.destroy()
         except ValueError:
             tk.messagebox.showerror("Error", "Por favor ingrese números válidos")
