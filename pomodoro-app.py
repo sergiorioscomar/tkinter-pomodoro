@@ -1,11 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
 from math import pi
-from playsound import playsound
+import pygame
 import threading
 
-# Constantes de tiempo
-WORK_MIN = 25
+# Variables de tiempo (ahora son globales para poder modificarlas)
+WORK_MIN = 1
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 15
 
@@ -20,7 +20,12 @@ paused_time = 0
 
 # functions
 def play_sound():
-    threading.Thread(target=lambda: playsound("sound/alarm.wav")).start()
+    pygame.mixer.init()
+    pygame.mixer.music.load("sound/alarm.wav")
+    pygame.mixer.music.play()
+    pygame.time.wait(1000)  # Espera 1 segundo entre cada sonido
+
+threading.Thread(target=play_sound).start()
 
 def start_pause_timer():
     global reps, total_seconds, current_seconds, paused_time, is_paused, timer_running
@@ -76,21 +81,6 @@ def reset_timer():
     checkmarks.config(text="")
     canvas.itemconfig(progress_arc, extent=0)
 
-
-def pause_or_reset():
-    global timer, is_paused, paused_time
-
-    if not is_paused:
-        window.after_cancel(timer)
-        is_paused = True
-        paused_time = current_seconds
-        reset_btn.config(text="🔄")
-    else:
-        reset_timer()
-        is_paused = False
-        paused_time = 0
-        reset_btn.config(text="⏸")
-
 def countdown(count):
     global current_seconds, timer, timer_running
     current_seconds = count
@@ -112,7 +102,6 @@ def countdown(count):
         timer_running = False
         is_paused = False
         start_btn.config(text="▶")
-        start_pause_timer()  # Inicia siguiente ciclo automáticamente
 
 def toggle_theme():
     global dark_mode
@@ -125,6 +114,48 @@ def toggle_theme():
     title_label.config(bg=bg, fg=fg)
     checkmarks.config(bg=bg, fg=fg)
     buttons_frame.config(bg=bg)
+
+def open_settings():
+    settings_window = tk.Toplevel(window)
+    settings_window.title("Configuración")
+    settings_window.geometry("250x150")
+    settings_window.resizable(False, False)
+    
+    # Hacer que la ventana de configuración sea modal
+    settings_window.transient(window)
+    settings_window.grab_set()
+    
+    # Frame para los inputs
+    input_frame = tk.Frame(settings_window, padx=10, pady=10)
+    input_frame.pack(fill="both", expand=True)
+    
+    # Variables para los inputs
+    work_var = tk.StringVar(value=str(WORK_MIN))
+    short_break_var = tk.StringVar(value=str(SHORT_BREAK_MIN))
+    long_break_var = tk.StringVar(value=str(LONG_BREAK_MIN))
+    
+    # Labels y inputs
+    tk.Label(input_frame, text="Tiempo de trabajo (min):").grid(row=0, column=0, sticky="w", pady=2)
+    tk.Entry(input_frame, textvariable=work_var, width=10).grid(row=0, column=1, padx=5)
+    
+    tk.Label(input_frame, text="Descanso corto (min):").grid(row=1, column=0, sticky="w", pady=2)
+    tk.Entry(input_frame, textvariable=short_break_var, width=10).grid(row=1, column=1, padx=5)
+    
+    tk.Label(input_frame, text="Descanso largo (min):").grid(row=2, column=0, sticky="w", pady=2)
+    tk.Entry(input_frame, textvariable=long_break_var, width=10).grid(row=2, column=1, padx=5)
+    
+    def save_settings():
+        global WORK_MIN, SHORT_BREAK_MIN, LONG_BREAK_MIN
+        try:
+            WORK_MIN = int(work_var.get())
+            SHORT_BREAK_MIN = int(short_break_var.get())
+            LONG_BREAK_MIN = int(long_break_var.get())
+            settings_window.destroy()
+        except ValueError:
+            tk.messagebox.showerror("Error", "Por favor ingrese números válidos")
+    
+    # Botón de guardar
+    tk.Button(settings_window, text="Guardar", command=save_settings).pack(pady=10)
 
 # ---------------- UI ----------------
 window = tk.Tk()
@@ -139,13 +170,15 @@ title_label.pack(pady=(5, 2))
 
 # Canvas
 canvas = tk.Canvas(window, width=100, height=100, bg="white", highlightthickness=0)
+tomato_img = tk.PhotoImage(file="img/tomato.png")  # Usa una imagen tipo tomate si tienes
+canvas.create_image(50, 42, image=tomato_img)
 canvas.pack()
 
 # Barra de progreso circular
 progress_arc = canvas.create_arc(5, 5, 95, 95, start=90, extent=0, style="arc", outline="green", width=3)
 
 # Fondo blanco redondo
-canvas.create_oval(15, 15, 85, 85, fill="white", outline="")
+canvas.create_oval(15, 15, 85, 80, fill="white", outline="")
 
 # Texto del cronómetro
 timer_text = canvas.create_text(50, 50, text="00:00", fill="black", font=("Courier", 14, "bold"))
@@ -170,5 +203,8 @@ reset_btn.grid(row=0, column=1, padx=1)
 
 theme_btn = ttk.Button(buttons_frame, text="🌙", command=toggle_theme, width=3)
 theme_btn.grid(row=0, column=2, padx=1)
+
+settings_btn = ttk.Button(buttons_frame, text="⚙️", command=open_settings, width=3)
+settings_btn.grid(row=0, column=3, padx=1)
 
 window.mainloop()
