@@ -1,8 +1,72 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from math import pi
 import pygame
 import threading
+import sys
+import os
+import sqlite3
+from datetime import datetime
+
+if getattr(sys, 'frozen', False):
+    # Empaquetado por PyInstaller
+    base_path = sys._MEIPASS
+else:
+    base_path = os.path.abspath(".")
+
+icon_path = os.path.join(base_path, "img", "tomato.png")
+sound_path = os.path.join(base_path, "sound", "alarm.wav")
+db_path = os.path.join(base_path, "pomodoro.db")
+
+# Inicializar la base de datos
+def init_db():
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS configuraciones
+                 (id INTEGER PRIMARY KEY, work_min INTEGER, short_break_min INTEGER, 
+                  long_break_min INTEGER, tarea TEXT, created_at TIMESTAMP)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS tareas_completadas
+                 (id INTEGER PRIMARY KEY, tarea TEXT, duracion INTEGER, 
+                  completada_at TIMESTAMP)''')
+    conn.commit()
+    conn.close()
+
+# Cargar última configuración
+def load_last_config():
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    c.execute('SELECT work_min, short_break_min, long_break_min, tarea FROM configuraciones ORDER BY created_at DESC LIMIT 1')
+    result = c.fetchone()
+    conn.close()
+    if result:
+        return result
+    return (1, 5, 15, "Trabajo")  # Valores por defecto
+
+# Guardar configuración
+def save_config(work_min, short_break_min, long_break_min, tarea):
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    c.execute('''INSERT INTO configuraciones (work_min, short_break_min, long_break_min, tarea, created_at)
+                 VALUES (?, ?, ?, ?, ?)''', 
+                 (work_min, short_break_min, long_break_min, tarea, datetime.now()))
+    conn.commit()
+    conn.close()
+
+# Guardar tarea completada
+def save_completed_task(tarea, duracion):
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    c.execute('''INSERT INTO tareas_completadas (tarea, duracion, completada_at)
+                 VALUES (?, ?, ?)''', 
+                 (tarea, duracion, datetime.now()))
+    conn.commit()
+    conn.close()
+
+# Inicializar la base de datos al inicio
+init_db()
+
+# Cargar la última configuración
+WORK_MIN, SHORT_BREAK_MIN, LONG_BREAK_MIN, TAREA = load_last_config()
 
 # Variables de tiempo (ahora son globales para poder modificarlas)
 WORK_MIN = 1
@@ -24,7 +88,7 @@ paused_time = 0
 # functions
 def play_sound():
     pygame.mixer.init()
-    pygame.mixer.music.load("sound/alarm.wav")
+    pygame.mixer.music.load(sound_path)
     pygame.mixer.music.play()
     pygame.time.wait(1000)  # Espera 1 segundo entre cada sonido
 
@@ -105,6 +169,10 @@ def countdown(count):
         timer_running = False
         is_paused = False
         start_btn.config(text="▶")
+        
+        # Guardar la tarea completada si era un período de trabajo
+        if reps % 2 == 1:  # Si era un período de trabajo
+            save_completed_task(TAREA, WORK_MIN)
 
 def toggle_theme():
     global dark_mode
@@ -124,22 +192,17 @@ def open_settings():
     settings_window.geometry("300x220")
     settings_window.resizable(False, False)
     
-    # Hacer que la ventana de configuración sea modal
     settings_window.transient(window)
     settings_window.grab_set()
     
-    # Frame para los inputs
     input_frame = tk.Frame(settings_window, padx=10, pady=10)
     input_frame.pack(fill="both", expand=True)
     
-    # Variables para los inputs
     work_var = tk.StringVar(value=str(WORK_MIN))
     short_break_var = tk.StringVar(value=str(SHORT_BREAK_MIN))
     long_break_var = tk.StringVar(value=str(LONG_BREAK_MIN))
     tarea_var = tk.StringVar(value=str(TAREA))
     
-    # Labels y inputs
-
     tk.Label(input_frame, text="Tiempo de trabajo (min):").grid(row=0, column=0, sticky="w", pady=2)
     tk.Entry(input_frame, textvariable=work_var, width=10).grid(row=0, column=1, padx=5)
     
@@ -150,21 +213,83 @@ def open_settings():
     tk.Entry(input_frame, textvariable=long_break_var, width=10).grid(row=2, column=1, padx=5)
 
     tk.Label(input_frame, text="Tarea a realizar:").grid(row=3, column=0, sticky="w", pady=2)
-    tk.Entry(input_frame, textvariable=tarea_var, width=10).grid(row=3, column=1, padx=5)
+    tk.Entry(input_frame, textvariable=tarea_var, width=20).grid(row=3, column=1, padx=5)
     
     def save_settings():
         global WORK_MIN, SHORT_BREAK_MIN, LONG_BREAK_MIN, TAREA
         try:
-            WORK_MIN = int(work_var.get())
-            SHORT_BREAK_MIN = int(short_break_var.get())
-            LONG_BREAK_MIN = int(long_break_var.get())
-            TAREA = str(tarea_var.get())
+            work_min = int(work_var.get())
+            short_break_min = int(short_break_var.get())
+            long_break_min = int(long_break_var.get())
+            tarea = str(tarea_var.get())
+            
+            # Guardar en la base de datos
+            save_config(work_min, short_break_min, long_break_min, tarea)
+            
+            # Actualizar variables globales
+            WORK_MIN = work_min
+            SHORT_BREAK_MIN = short_break_min
+            LONG_BREAK_MIN = long_break_min
+            TAREA = tarea
+            
             settings_window.destroy()
         except ValueError:
-            tk.messagebox.showerror("Error", "Por favor ingrese números válidos")
+            messagebox.showerror("Error", "Por favor ingrese números válidos")
     
-    # Botón de guardar
     tk.Button(settings_window, text="Guardar", command=save_settings).pack(pady=10)
+
+def show_history():
+    history_window = tk.Toplevel(window)
+    history_window.title("Historial de Tareas")
+    history_window.geometry("400x300")
+    history_window.resizable(False, False)
+    
+    history_window.transient(window)
+    history_window.grab_set()
+    
+    # Frame principal
+    main_frame = tk.Frame(history_window)
+    main_frame.pack(fill="both", expand=True, padx=10, pady=10)
+    
+    # Crear Treeview para mostrar las tareas
+    columns = ('tarea', 'duracion', 'fecha')
+    tree = ttk.Treeview(main_frame, columns=columns, show='headings')
+    
+    # Definir encabezados
+    tree.heading('tarea', text='Tarea')
+    tree.heading('duracion', text='Duración (min)')
+    tree.heading('fecha', text='Fecha y Hora')
+    
+    # Configurar columnas
+    tree.column('tarea', width=150)
+    tree.column('duracion', width=100)
+    tree.column('fecha', width=150)
+    
+    # Agregar scrollbar
+    scrollbar = ttk.Scrollbar(main_frame, orient="vertical", command=tree.yview)
+    tree.configure(yscrollcommand=scrollbar.set)
+    
+    # Posicionar elementos
+    tree.pack(side="left", fill="both", expand=True)
+    scrollbar.pack(side="right", fill="y")
+    
+    # Cargar datos de la base de datos
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    c.execute('''SELECT tarea, duracion, completada_at 
+                 FROM tareas_completadas 
+                 ORDER BY completada_at DESC''')
+    
+    for row in c.fetchall():
+        # Formatear la fecha para mejor visualización
+        fecha = datetime.strptime(row[2], '%Y-%m-%d %H:%M:%S.%f')
+        fecha_formateada = fecha.strftime('%d/%m/%Y %H:%M')
+        tree.insert('', 'end', values=(row[0], row[1], fecha_formateada))
+    
+    conn.close()
+    
+    # Botón para cerrar
+    tk.Button(history_window, text="Cerrar", command=history_window.destroy).pack(pady=10)
 
 # ---------------- UI ----------------
 window = tk.Tk()
@@ -179,7 +304,7 @@ title_label.pack(pady=(5, 2))
 
 # Canvas
 canvas = tk.Canvas(window, width=100, height=100, bg="white", highlightthickness=0)
-tomato_img = tk.PhotoImage(file="img/tomato.png")  # Usa una imagen tipo tomate si tienes
+tomato_img = tk.PhotoImage(file=icon_path)  # Usa una imagen tipo tomate si tienes
 canvas.create_image(50, 42, image=tomato_img)
 canvas.pack()
 
@@ -215,5 +340,8 @@ theme_btn.grid(row=0, column=2, padx=1)
 
 settings_btn = ttk.Button(buttons_frame, text="⚙️", command=open_settings, width=3)
 settings_btn.grid(row=0, column=3, padx=1)
+
+history_btn = ttk.Button(buttons_frame, text="📋", command=show_history, width=3)
+history_btn.grid(row=0, column=4, padx=1)
 
 window.mainloop()

@@ -5,7 +5,7 @@ a = Analysis(
     ['pomodoro-app.py'],
     pathex=[],
     binaries=[],
-    datas=[('sound/alarm.wav', 'sound')],
+    datas=[('img/tomato.png', 'img'), ('sound/alarm.wav', 'sound')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -35,5 +35,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['img/icono.png'],
+    icon=['img/tomato.png'],
 )
