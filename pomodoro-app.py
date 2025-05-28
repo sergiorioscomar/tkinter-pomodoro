@@ -14,6 +14,7 @@ timer = None
 dark_mode = False
 total_seconds = 0
 current_seconds = 0
+timer_running = False
 is_paused = False
 paused_time = 0
 
@@ -21,15 +22,27 @@ paused_time = 0
 def play_sound():
     threading.Thread(target=lambda: playsound("sound/alarm.wav")).start()
 
-def start_timer():
-    global reps, total_seconds, current_seconds, paused_time, is_paused
+def start_pause_timer():
+    global reps, total_seconds, current_seconds, paused_time, is_paused, timer_running
 
-    if is_paused:
-        is_paused = False
-        countdown(paused_time)
-        reset_btn.config(text="⏸")
+    if timer_running and not is_paused:
+        # PAUSA
+        window.after_cancel(timer)
+        is_paused = True
+        paused_time = current_seconds
+        start_btn.config(text="🔁")  # Reanudar
         return
 
+    if is_paused:
+        # REANUDA
+        is_paused = False
+        start_btn.config(text="⏸")  # Pausar
+        countdown(paused_time)
+        return
+
+    # START
+    timer_running = True
+    start_btn.config(text="⏸")  # Cambia a Pausar
     reps += 1
 
     if reps % 8 == 0:
@@ -49,16 +62,20 @@ def start_timer():
     countdown(current_seconds)
 
 def reset_timer():
-    global reps, timer, current_seconds, paused_time
+    global reps, timer, current_seconds, paused_time, timer_running, is_paused
     if timer:
         window.after_cancel(timer)
     reps = 0
     current_seconds = 0
     paused_time = 0
+    timer_running = False
+    is_paused = False
+    start_btn.config(text="▶")  # Vuelve a Start
     canvas.itemconfig(timer_text, text="00:00")
-    title_label.config(text="Pomodoro-app", fg="green")
+    title_label.config(text="Pomodoro", fg="green")
     checkmarks.config(text="")
     canvas.itemconfig(progress_arc, extent=0)
+
 
 def pause_or_reset():
     global timer, is_paused, paused_time
@@ -75,7 +92,7 @@ def pause_or_reset():
         reset_btn.config(text="⏸")
 
 def countdown(count):
-    global current_seconds, timer
+    global current_seconds, timer, timer_running
     current_seconds = count
     minutes = count // 60
     seconds = count % 60
@@ -87,12 +104,15 @@ def countdown(count):
     if count > 0:
         timer = window.after(1000, countdown, count - 1)
     else:
-        play_sound()  # <- Reproducir sonido
-        play_sound()  # <- Reproducir sonido 2da
-        play_sound()  # <- Reproducir sonido 3ra
+        play_sound()
+        play_sound()
+        play_sound()
         marks = "✔" * (reps // 2)
         checkmarks.config(text=marks)
-        start_timer()
+        timer_running = False
+        is_paused = False
+        start_btn.config(text="▶")
+        start_pause_timer()  # Inicia siguiente ciclo automáticamente
 
 def toggle_theme():
     global dark_mode
@@ -142,10 +162,10 @@ style = ttk.Style()
 style.theme_use("clam")
 style.configure("TButton", font=("Segoe UI", 8), padding=(1, 1), relief="flat")
 
-start_btn = ttk.Button(buttons_frame, text="▶", command=start_timer, width=3)
+start_btn = ttk.Button(buttons_frame, text="▶", command=start_pause_timer, width=3)
 start_btn.grid(row=0, column=0, padx=1)
 
-reset_btn = ttk.Button(buttons_frame, text="⏸", command=pause_or_reset, width=3)
+reset_btn = ttk.Button(buttons_frame, text="🔄", command=reset_timer, width=3)
 reset_btn.grid(row=0, column=1, padx=1)
 
 theme_btn = ttk.Button(buttons_frame, text="🌙", command=toggle_theme, width=3)
