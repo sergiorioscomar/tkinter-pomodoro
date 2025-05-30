@@ -40,7 +40,7 @@ def load_last_config():
     conn.close()
     if result:
         return result
-    return (1, 5, 15, "Trabajo")  # Valores por defecto
+    return (25, 5, 15, "Trabajo")  # Valores por defecto
 
 # Guardar configuración
 def save_config(work_min, short_break_min, long_break_min, tarea):
@@ -69,7 +69,7 @@ init_db()
 WORK_MIN, SHORT_BREAK_MIN, LONG_BREAK_MIN, TAREA = load_last_config()
 
 # Variables de tiempo (ahora son globales para poder modificarlas)
-WORK_MIN = 1
+WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 15
 TAREA = "Trabajo"

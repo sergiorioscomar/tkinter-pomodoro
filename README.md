@@ -8,9 +8,22 @@ Es una técnica de gestión del tiempo que divide tu trabajo en bloques de 25 mi
 
 ---
 
-## 📸 Captura de Pantalla
+## 📸 Vistas de la Aplicación
 
-![Vista de la app](img/pomodoro-app.png)
+### 🖥️ Interfaz Principal
+![Vista principal modo claro](img/pomodoro-app-white.png)
+*Interfaz principal en modo claro con temporizador y barra de progreso circular*
+
+![Vista principal modo oscuro](img/pomodoro-app-black.png)
+*Interfaz principal en modo oscuro con temporizador y barra de progreso circular*
+
+### ⚙️ Configuración
+![Ventana de configuración](img/pomodoro-app-setting.png)
+*Panel de configuración para personalizar tiempos y tareas*
+
+### 📋 Historial
+![Ventana de historial](img/pomodoro-app-history.png)
+*Vista del historial de tareas completadas con estadísticas*
 
 ---
 
@@ -60,23 +73,74 @@ python3 pomodoro-app.py
 
 ## 🎨 Características
 
-- ✅ Temporizador de 25 minutos para enfoque.
-- ☕ Pausas cortas y largas automáticas.
-- 🎯 Interfaz clara con soporte para **modo claro y oscuro**.
-- 🔁 Botones funcionales: Inicio, Reiniciar, Cambio de Tema.
-- ⏳ **Barra de progreso** externa a la imagen del temporizador.
-- 🧲 Imagen redonda de tomate como ícono visual del temporizador.
-- 🪟 Ventana **fija y minimizable**.
-- 🌟 Icono de aplicación personalizado incluido.
+- ✅ Temporizador Pomodoro con tiempos personalizables
+- ✅ Configuración flexible de:
+  - Tiempo de trabajo (por defecto 25 min)
+  - Descanso corto (por defecto 5 min)
+  - Descanso largo (por defecto 15 min)
+  - Nombre de la tarea actual
+- ✅ Historial de actividades que registra:
+  - Tareas completadas
+  - Duración de cada tarea
+  - Fecha y hora de realización
+- ✅ Base de datos SQLite para persistencia de datos
+- ✅ Interfaz clara con soporte para **modo claro y oscuro**
+- ✅ Botones funcionales:
+  - ▶️ Inicio/Pausa
+  - 🔄 Reinicio
+  - 🌙 Cambio de Tema
+  - ⚙️ Configuración
+  - 📋 Historial de tareas
+- ✅ **Barra de progreso** circular
+- ✅ Imagen de tomate como ícono visual
+- ✅ Ventana **fija y minimizable**
+- ✅ Icono de aplicación personalizado
+- ✅ Alarma sonora al completar cada ciclo
+
+---
+
+## 🧩 Características Detalladas
+
+- ✔️ Temporizador Pomodoro con tiempos personalizables
+- ✔️ Sistema de configuración completo:
+  - Ajuste de tiempos de trabajo y descanso
+  - Personalización del nombre de la tarea
+  - Persistencia de configuraciones
+- ✔️ Historial detallado de actividades:
+  - Registro de tareas completadas
+  - Seguimiento de tiempo por tarea
+  - Historial temporal de actividades
+- ✔️ Interfaz clara y minimalista
+- ✔️ Modo claro y oscuro 🌞🌙
+- ✔️ Barra de progreso circular exterior
+- ✔️ Imagen redonda del tomate como fondo central
+- ✔️ Botones mejorados con íconos y estilo moderno
+- ✔️ Opción de pausa y reinicio dinámico
+- ✔️ Icono personalizado en la ventana
+- ✔️ Ventana no redimensionable
+- ✔️ Base de datos para guardar configuraciones e historial
+- ✔️ Alarma sonora al completar ciclos
+
+---
+
+## 🔧 Controles
+
+- ▶️ Inicio/Pausa: comienza o pausa el ciclo actual
+- 🔄 Reinicio: reinicia el temporizador
+- 🌙 Tema: cambia entre modo claro y oscuro
+- ⚙️ Configuración: ajusta tiempos y nombre de tarea
+- 📋 Historial: muestra registro de tareas completadas
 
 ---
 
 ## ✨ Mejoras Futuras
 
-- [ ] Notificaciones al terminar los ciclos.
-- [ ] Sonido de alarma opcional.
-- [ ] Estadísticas de productividad.
-- [ ] Configuración de tiempos personalizados.
+- [ ] Notificaciones del sistema al terminar los ciclos
+- [ ] Sonido de alarma personalizable
+- [ ] Estadísticas detalladas de productividad diaria/semanal
+- [ ] Exportar historial a CSV/Excel
+- [ ] Sincronización entre dispositivos
+- [ ] Recordatorios programados
 
 ---
 

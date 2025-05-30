@@ -1,6 +1,6 @@
    [Desktop Entry]
-   Name=Pomodoro
-   Exec=/home/sergio/Documentos/proyectos/pomodoro-app/dist/pomodoro
+   Name=Pomodoro-app
+   Exec=/home/sergio/Documentos/proyectos/pomodoro-app/dist/pomodoro-app
    Icon=/home/sergio/Documentos/proyectos/pomodoro-app/img/tomato.png
    Type=Application
    Categories=Utility;
