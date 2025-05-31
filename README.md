@@ -11,19 +11,19 @@ Es una técnica de gestión del tiempo que divide tu trabajo en bloques de 25 mi
 ## 📸 Vistas de la Aplicación
 
 ### 🖥️ Interfaz Principal
-![Vista principal modo claro](img/pomodoro-app-white.png)
-*Interfaz principal en modo claro con temporizador y barra de progreso circular*
+- ![Vista principal modo claro](img/pomodoro-app-white.png)
+- *Interfaz principal en modo claro con temporizador y barra de progreso circular*
 
-![Vista principal modo oscuro](img/pomodoro-app-black.png)
-*Interfaz principal en modo oscuro con temporizador y barra de progreso circular*
+- ![Vista principal modo oscuro](img/pomodoro-app-black.png)
+- *Interfaz principal en modo oscuro con temporizador y barra de progreso circular*
 
 ### ⚙️ Configuración
-![Ventana de configuración](img/pomodoro-app-setting.png)
-*Panel de configuración para personalizar tiempos y tareas*
+- ![Ventana de configuración](img/pomodoro-app-setting.png)
+- *Panel de configuración para personalizar tiempos y tareas*
 
 ### 📋 Historial
-![Ventana de historial](img/pomodoro-app-history.png)
-*Vista del historial de tareas completadas con estadísticas*
+- ![Ventana de historial](img/pomodoro-app-history.png)
+- *Vista del historial de tareas completadas con estadísticas*
 
 ---
 
@@ -155,27 +155,6 @@ pomodoro-app/
 └── README.md            # Documentación del proyecto
 
 ```
----
-## 🧩 Características
-- ✔️ Temporizador Pomodoro con 25/5/15 minutos predefinidos
-
-- ✔️ Interfaz clara y minimalista
-
-- ✔️ Modo claro y oscuro 🌞🌙
-
-- ✔️ Barra de progreso circular exterior
-
-- ✔️ Imagen redonda del tomate como fondo central
-
-- ✔️ Botones mejorados con íconos y estilo moderno
-
-- ✔️ Opción de pausa y reinicio dinámico en el mismo botón
-
-- ✔️ Icono personalizado en la ventana
-
-- ✔️ La ventana no es redimensionable y mantiene todo dentro del marco
----
-
 
 ## 🔧 Controles
 - Inicio: comienza el ciclo de trabajo o descanso

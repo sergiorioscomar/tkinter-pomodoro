@@ -304,7 +304,7 @@ title_label.pack(pady=(5, 2))
 
 # Canvas
 canvas = tk.Canvas(window, width=100, height=100, bg="white", highlightthickness=0)
-tomato_img = tk.PhotoImage(file=icon_path)  # Usa una imagen tipo tomate si tienes
+tomato_img = tk.PhotoImage(file=icon_path)
 canvas.create_image(50, 42, image=tomato_img)
 canvas.pack()
 
@@ -322,7 +322,7 @@ checkmarks = tk.Label(window, fg="green", bg="white", font=("Arial", 10))
 checkmarks.pack(pady=(0, 2))
 
 # Botones en frame
-buttons_frame = tk.Frame(window, bg="white")
+buttons_frame = tk.Frame(window, bg="white", highlightthickness=0)
 buttons_frame.pack()
 
 style = ttk.Style()
