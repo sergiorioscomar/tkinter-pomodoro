@@ -11,18 +11,18 @@ Es una técnica de gestión del tiempo que divide tu trabajo en bloques de 25 mi
 ## 📸 Vistas de la Aplicación
 
 ### 🖥️ Interfaz Principal
-- ![Vista principal modo claro](img/pomodoro-app-white.png)
+![Vista principal modo claro](img/pomodoro-app-white.png)
 - *Interfaz principal en modo claro con temporizador y barra de progreso circular*
 
-- ![Vista principal modo oscuro](img/pomodoro-app-black.png)
+![Vista principal modo oscuro](img/pomodoro-app-black.png)
 - *Interfaz principal en modo oscuro con temporizador y barra de progreso circular*
 
 ### ⚙️ Configuración
-- ![Ventana de configuración](img/pomodoro-app-setting.png)
+![Ventana de configuración](img/pomodoro-app-setting.png)
 - *Panel de configuración para personalizar tiempos y tareas*
 
 ### 📋 Historial
-- ![Ventana de historial](img/pomodoro-app-history.png)
+![Ventana de historial](img/pomodoro-app-history.png)
 - *Vista del historial de tareas completadas con estadísticas*
 
 ---
